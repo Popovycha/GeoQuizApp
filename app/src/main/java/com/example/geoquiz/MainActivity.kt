@@ -45,7 +45,20 @@ class MainActivity : ComponentActivity() {
             updateQuestion()
         }
         updateQuestion()
+
+        binding.previousButton.setOnClickListener {
+            currentIndex = (currentIndex - 1) % questionBank.size
+            updateQuestion()
+        }
+        updateQuestion()
+
+        binding.questionTextView.setOnClickListener {
+            currentIndex = (currentIndex + 1) % questionBank.size
+            updateQuestion()
+        }
+        updateQuestion()
     }
+
 
     private fun updateQuestion() {
         val questionTextResId = questionBank[currentIndex].textResId
