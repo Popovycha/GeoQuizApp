@@ -12,4 +12,6 @@
     <string name="prev_button">Prev</string>
     <string name="correct_toast">Correct!</string>
     <string name="incorrect_toast">Incorrect!</string>
+    <string name="percent_grade">Your Grade is %1$d%% successful </string>
+    <string name="unknown">Unknown</string>
 </resources>
