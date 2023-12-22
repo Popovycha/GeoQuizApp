@@ -18,7 +18,4 @@
     <string name="judgment_toast">Cheating is wrong.</string>
     <string name="percent_grade">Your Grade is %1$d%% successful </string>
     <string name="unknown">Unknown</string>
-    <string name="api_level">Api Level %1$S</string>
-    <string name="out_cheats">You are out of cheats</string>
-    <string name="rem_cheats">Cheat remaining %1$d</string>
 </resources>
