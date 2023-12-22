@@ -3,6 +3,7 @@ package com.example.geoquiz
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -49,6 +50,9 @@ class CheatActivity : AppCompatActivity() {
             answerTextView.setText(R.string.true_button)
             setAnswerShownResult(false)
         }
+        val apiLevel : TextView = findViewById(R.id.api_level)
+        val buildNumber = Build.VERSION.SDK_INT.toString()
+        apiLevel.text = getString(R.string.api_level, buildNumber)
     }
 
     private fun setAnswerShownResult(isAnswerShown: Boolean) {
