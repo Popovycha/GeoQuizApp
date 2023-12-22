@@ -1,14 +1,21 @@
 package com.example.geoquiz
 
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.RenderEffect
+import android.graphics.Shader
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
+import android.widget.Toast.makeText
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import com.example.geoquiz.databinding.ActivityMainBinding
 
 
@@ -30,6 +37,7 @@ class MainActivity : ComponentActivity() {
 
     private var correctAnswers = 0
     private var answered = 0
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate(Bundle?) called")
@@ -50,13 +58,29 @@ class MainActivity : ComponentActivity() {
             quizViewModel.moveToNext()
             updateQuestion()
         }
+        var tokens = 3
+
         binding.cheatButton.setOnClickListener {
         // Start CheatActivity
-            val answerIsTrue = quizViewModel.currentQuestionAnswer
-            val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
-            cheatLauncher.launch(intent)
+            //Challenge: Limited Cheats
+            if ( tokens <= 3 && tokens != 0) {
+                tokens -= 1
+                val remTokens = getString(R.string.rem_cheats, tokens)
+                makeText(this, remTokens, LENGTH_SHORT).show()
+                Log.d(TAG, "TOKENS $tokens")
+                val answerIsTrue = quizViewModel.currentQuestionAnswer
+                val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
+                cheatLauncher.launch(intent)
+            } else {
+                binding.cheatButton.isEnabled = false
+                makeText(this,R.string.out_cheats, LENGTH_SHORT).show()
+            }
+
         }
         updateQuestion()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            blurCheatButton()
+        }
 
         binding.previousButton.setOnClickListener {
             quizViewModel.moveToPrev()
@@ -110,6 +134,7 @@ class MainActivity : ComponentActivity() {
         manageAnswerButtons()
     }
 
+    @SuppressLint("StringFormatInvalid")
     private fun checkAnswer(userAnswer: Boolean) {
         binding.falseButton.isEnabled = false
         binding.trueButton.isEnabled = false
@@ -130,6 +155,15 @@ class MainActivity : ComponentActivity() {
                 .show()
         }
         correctAnswers++
+    }
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun blurCheatButton() {
+        val effect = RenderEffect.createBlurEffect(
+            10.0f,
+            10.0f,
+            Shader.TileMode.CLAMP
+        )
+        binding.cheatButton.setRenderEffect(effect)
     }
 
 
